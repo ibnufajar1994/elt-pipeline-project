@@ -14,7 +14,7 @@
   # Clone
   git clone [repo_link]
   ```
-- **Create env file** in project root directory :
+- **Create .env file** in project root directory :
   ```
     # Source
     SRC_POSTGRES_DB=pactravel
