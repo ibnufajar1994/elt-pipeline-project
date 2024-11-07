@@ -27,28 +27,30 @@ Before we jump in to the step of designing the data warehouse, first we need und
 Based on the database structure and business context, here are the potential problems and answer that might Pactravel needs for designing the data warehouse:
 ### PROBLEMS AND STAKEHOLDER NEEDS
 
-## 1. Problem:
+**Problem 1:**
 Revenue Analysis and Optimization Stakeholder Need: Management needs to understand revenue patterns, pricing effectiveness, and profitability across different services.
-**- Current Challenges:**
+- Current Challenges:
   - Difficult to track total revenue per customer
   - No clear visibility on which routes/hotels are most profitable
   - Cannot easily identify peak booking seasons
   - No way to analyze package deals vs individual bookings
-**- Solution:**
-    - Create a revenue analysis dashboard that includes:
-    - Revenue trends by time period
-    - Revenue breakdown by service type (flights vs hotels)
-    - Revenue per route and hotel
-    - Package deal performance metrics
-    - Add booking source tracking to understand which channels drive the most revenue
 
-## 2. Problem:
+**Solution:**
+  - Create a revenue analysis dashboard that includes:
+  - Revenue trends by time period
+  - Revenue breakdown by service type (flights vs hotels)
+  - Revenue per route and hotel
+  - Package deal performance metrics
+  - Add booking source tracking to understand which channels drive the most revenue
+
+**Problem 2:**
 Customer Behavior and Preferences Analysis Stakeholder Need: Marketing and Product teams need to understand customer patterns to improve offerings and targeting.
 **Current Challenges:**
 - No tracking of customer booking frequency
 - Cannot easily segment customers
 - Limited visibility into travel preferences
 - No way to track customer lifetime value
+
 **Solution:**
 - Develop customer analytics capabilities:
 - Create customer segmentation based on booking patterns
@@ -57,14 +59,15 @@ Customer Behavior and Preferences Analysis Stakeholder Need: Marketing and Produ
 - Monitor seasonal booking patterns by customer segment
 
 
-## 3. Problem:
+**Problem3:**
 Operational Performance Monitoring Stakeholder Need: Operations team needs to optimize service delivery and identify potential issues
 - Current chalanges:
   - No systematic way to track booking completion rates
   - Cannot easily identify popular routes and hotels
   - Difficult to optimize inventory management
   - No clear view of capacity utilization
-### Solutions
+
+**Solutions:**
 Create operational dashboards showing:
 - Booking trends by route and hotel
 - Capacity utilization rates
@@ -72,56 +75,35 @@ Create operational dashboards showing:
 - Hotel occupancy rates
 - Add tracking for booking status and completion rates
 
-## 2. Select the Businsess Process
+
+## 2. Select the Businsess Process & Declare the Grain
 From the previous problems identified:
 - Revenue Analysis and Optimization
 - Customer Behavior and Preferences Analysis
 - Operational Performance Monitoring
 
-Here are the relevant business processes that should be modeled:
+Here are the relevant business processes and the grain that should be modeled:
 
-**1. Sales/Booking Process**
-- This process covers all booking transactions (both flights and hotels)
-- Addresses revenue analysis needs
-- Captures customer booking patterns
-- Key metrics: revenue, booking volume, average ticket value
-- Primary source tables: flight_bookings, hotel_bookings
-**This process is crucial for:**
-  - Revenue tracking and analysis -
-  - Customer purchase behavior
-  - Sales performance monitoring
-  - Package vs. individual booking analysis
+**1. For Revenue Analysis and Optimization:**
+Business Process: Booking Transaction
+Grains: 
+- a. Individual Booking Level (Most Granular)
+  - A single record represents one flight booking or hotel booking transaction. Captures detailed transaction data including customer, price, date, route/hotel.
 
-**2. Customer Management Process**
-- Focuses on customer relationships and profiles
-- Addresses customer behavior analysis needs
-- Captures customer demographics and preferences
-- Key metrics: customer lifetime value, customer segmentation
-- Primary source tables: customers, flight_bookings, hotel_bookings
-This process supports:
-  - Customer segmentation
-  - Customer preference analysis
-  - Demographics analysis
-  - Customer value assessment
-Flight Operations Process
-Covers flight-specific operational metrics
-Addresses operational performance monitoring
-Captures route performance and capacity utilization
-Key metrics: route popularity, seat utilization, flight frequency
-Primary source tables: flight_bookings, aircrafts, airlines, airports
-This process enables:
-Route analysis
-Airline partnership performance
-Capacity planning
-Flight scheduling optimization
-Hotel Operations Process
-Focuses on hotel-specific operational metrics
-Addresses operational performance monitoring
-Captures hotel performance and occupancy
-Key metrics: occupancy rate, average daily rate, hotel popularity
-Primary source tables: hotel_bookings, hotel
-This process supports:
-Hotel performance analysis
-Occupancy tracking
-Hotel partnership evaluation
-Pricing optimization
+- b. Daily Booking Summary Level
+  - A single record represents daily total bookings and revenue by service type (flight/hotel). Aggregated view of bookings and revenue performance per day.
+
+**2. For Customer Behavior and Preferences Analysis:**
+Business Process: Customer Travel Patterns Grains: 
+
+- a. Customer Trip Level
+  - A single record represents one complete trip by a customer (combining flight and hotel bookings). Shows customer's travel choices and preferences per trip.
+
+- b. Customer Monthly Activity Level
+  - A single record represents a customer's monthly travel activity. Aggregates customer's booking behavior and spending patterns monthly.
+
+**3. For Operational Performance Monitoring:**
+Business Process: Service Capacity Utilization Grains:
+- a. Flight Route Daily Level
+  - A single record represents daily capacity and utilization for each flight route. Shows booking rates and seat occupancy per route per day.
+
