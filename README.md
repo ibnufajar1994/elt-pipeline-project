@@ -85,42 +85,103 @@ Here are the relevant business processes and the grain that should be modeled:
 **1. For Revenue Analysis and Optimization:**
 Business Process: Booking Transaction
 Grains: 
-- Individual Booking Level (Most Granular)
+- Individual Booking Level 
   - A single record represents one flight booking or hotel booking transaction. Captures detailed transaction data including customer, price, date, route/hotel.
 
 
 **2. For Customer Behavior and Preferences Analysis:**
 Business Process: Customer Travel Patterns Grains: 
 
-- a. Customer Trip Level
-  - A single record represents one complete trip by a customer (combining flight and hotel bookings). Shows customer's travel choices and preferences per trip.
-
-- b. Customer Monthly Activity Level
-  - A single record represents a customer's monthly travel activity. Aggregates customer's booking behavior and spending patterns monthly.
+- Customer Trip Level
+  - A single record represents a customer's booking preference for a flight or hotel. Captures customer demographics (age, gender, country), booking type (flight or hotel), and revenue generated.
 
 **3. For Operational Performance Monitoring:**
 Business Process: Service Capacity Utilization Grains:
-- a. Flight Route Daily Level
-  - A single record represents daily capacity and utilization for each flight route. Shows booking rates and seat occupancy per route per day.
+
+  - A single record represents one flight or hotel booking transaction. Captures detailed transaction data including customer, destination (airport or hotel), date, and booking type (flight or hotel).
+
  
  ## Identify the Dimension
  After the grain has been defined, the next step is to identify the dimension needed for the data warehouse. The dimension needed for data warehouse include:
 
-1. Date Dimension (dim_date)
-   This table store information about standart date dimension for temporal analysis such as: day, month, quarter, year, bussiness calender (weekend / holiday), etc.
 
-2. Aircraft Dimension (dim_aircraft)
+
+1. Aircraft Dimension (dim_aircraft)
    Store information about various type of  aircraft that used in flight
 
-3. Airlines Dimension (dim_airlines)
+2. Airlines Dimension (dim_airlines)
    Store information about the airlines operating the flights
 
-4. Airport Dimension (dim_airport)
+3. Airport Dimension (dim_airport)
    Stores information about airport and location
 
-5. Customer Dimension (dim_customer)
+4. Customer Dimension (dim_customer)
    Stores detail information about costumer who used the pactravel application.
 
-6. Hotel Dimension (dim_hotel)
+5. Hotel Dimension (dim_hotel)
    Contain hotel property information
+
+## Identify the Fact
+After we define the dimension, the next step is to identify the fact table where this fact table will store any measurement that will answer the question of the stake holders, the fact table include:
+
+1. flight booking fact table (fact_flight_booking)
+   This table contain information about the detail of the booking flight from single customer_id
    
+3. hotel booking fact table (fact_hotel_booking)
+   This table contain information about the detail of the booking hotel from single customer_id
+   
+4. Customer booking preferences table
+   This table contain information about single data of customer with booking preferences to capture customer behaviour
+
+Bellow is the dimension table detail:
+
+# Dimension Tables
+
+## A. dim_aircrafts
+
+| Column Name    | Data Type | Description   |
+|----------------|-----------|---------------|
+| aircraft_sk    | UUID      | Surrogate Key |
+| aircraft_nk    | VARCHAR   | Natural Key   |
+| aircraft_iata  | VARCHAR   | IATA Code     |
+| aircraft_icao  | VARCHAR   | ICAO Code     |
+
+## B. dim_airlines
+
+| Column Name   | Data Type | Description   |
+|---------------|-----------|---------------|
+| airline_sk    | UUID      | Surrogate Key |
+| airline_nk    | INT       | Natural Key   |
+| airline_name  | VARCHAR   | Airline Name  |
+| country       | VARCHAR   | Country       |
+
+## C. dim_airports
+
+| Column Name   | Data Type | Description   |
+|---------------|-----------|---------------|
+| airport_sk    | UUID      | Surrogate Key |
+| airport_nk    | INT       | Natural Key   |
+| airport_name  | VARCHAR   | Airport Name  |
+| airport_city  | VARCHAR   | City          |
+
+## D. dim_customers
+
+| Column Name         | Data Type | Description   |
+|---------------------|-----------|---------------|
+| customer_sk         | UUID      | Surrogate Key |
+| customer_nk         | INT       | Natural Key   |
+| customer_first_name | VARCHAR   | First Name    |
+| customer_family_name| VARCHAR   | Family Name   |
+| customer_gender     | VARCHAR   | Gender        |
+| customer_country    | VARCHAR   | Country       |
+
+## E. dim_hotel
+
+| Column Name   | Data Type | Description   |
+|---------------|-----------|---------------|
+| hotel_sk      | UUID      | Surrogate Key |
+| hotel_nk      | INT       | Natural Key   |
+| hotel_name    | VARCHAR   | Hotel Name    |
+| hotel_city    | VARCHAR   | City          |
+| hotel_country | VARCHAR   | Country       |
+| hotel_score   | FLOAT     | Score         |
