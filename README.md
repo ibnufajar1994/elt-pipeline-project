@@ -40,7 +40,6 @@ Revenue Analysis and Optimization Stakeholder Need: Management needs to understa
   - Revenue trends by time period
   - Revenue breakdown by service type (flights vs hotels)
   - Revenue per route and hotel
-  - Package deal performance metrics
   - Add booking source tracking to understand which channels drive the most revenue
 
 **Problem 2:**
@@ -64,7 +63,6 @@ Operational Performance Monitoring Stakeholder Need: Operations team needs to op
 - Current chalanges:
   - No systematic way to track booking completion rates
   - Cannot easily identify popular routes and hotels
-  - Difficult to optimize inventory management
   - No clear view of capacity utilization
 
 **Solutions:**
@@ -87,11 +85,9 @@ Here are the relevant business processes and the grain that should be modeled:
 **1. For Revenue Analysis and Optimization:**
 Business Process: Booking Transaction
 Grains: 
-- a. Individual Booking Level (Most Granular)
+- Individual Booking Level (Most Granular)
   - A single record represents one flight booking or hotel booking transaction. Captures detailed transaction data including customer, price, date, route/hotel.
 
-- b. Daily Booking Summary Level
-  - A single record represents daily total bookings and revenue by service type (flight/hotel). Aggregated view of bookings and revenue performance per day.
 
 **2. For Customer Behavior and Preferences Analysis:**
 Business Process: Customer Travel Patterns Grains: 
