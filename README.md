@@ -106,4 +106,25 @@ Business Process: Customer Travel Patterns Grains:
 Business Process: Service Capacity Utilization Grains:
 - a. Flight Route Daily Level
   - A single record represents daily capacity and utilization for each flight route. Shows booking rates and seat occupancy per route per day.
+ 
+ ## Identify the Dimension
+ After the grain has been defined, the next step is to identify the dimension needed for the data warehouse. The dimension needed for data warehouse include:
 
+1. Date Dimension (dim_date)
+   This table store information about standart date dimension for temporal analysis such as: day, month, quarter, year, bussiness calender (weekend / holiday), etc.
+
+2. Aircraft Dimension (dim_aircraft)
+   Store information about various type of  aircraft that used in flight
+
+3. Airlines Dimension (dim_airlines)
+   Store information about the airlines operating the flights
+
+4. Airport Dimension (dim_airport)
+   Stores information about airport and location
+
+5. Customer Dimension (dim_customer)
+   Stores detail information about costumer who used the pactravel application.
+
+6. Hotel Dimension (dim_hotel)
+   Contain hotel property information
+   
