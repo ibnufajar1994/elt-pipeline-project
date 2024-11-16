@@ -1,0 +1,182 @@
+version: 2
+
+models:
+  - name: dim_aircrafts
+    description: "Dimension table from aircrafts table staging"
+    columns:
+      - name: sk_aircraft_id
+        description: "Surrogate Key for aircraft_id"
+        tests:
+          - not_null
+          - dbt_constraints.primary_key
+
+
+      - name: nk_aircraft_id
+        description: "Natural Key for aircraft_id"
+        tests:
+          - not_null
+        data_type: integer
+
+  - name: dim_airlines
+    description: "Dimension table from airlines table staging"
+    columns:
+      - name: sk_airline_id
+        description: "Surrogate Key for airline_id"
+        tests:
+          - not_null
+          - dbt_constraints.primary_key
+
+
+      - name: nk_airline_id
+        description: "Natural Key for airline_id"
+        tests:
+          - not_null
+        data_type: integer
+
+
+  - name: dim_airports
+    description: "Dimension table from airports table staging"
+    columns:
+      - name: sk_airport_id
+        description: "Surrogate Key for airport_id"
+        tests:
+          - not_null
+          - dbt_constraints.primary_key
+
+      - name: nk_airport_id
+        description: "Natural Key for airport_id"
+        tests:
+          - not_null
+        data_type: integer
+
+
+  - name: dim_customers
+    description: "Dimension table from customers table staging"
+    columns:
+      - name: sk_customer_id
+        description: "Surrogate Key for customer_id"
+        tests:
+          - not_null
+          - dbt_constraints.primary_key
+
+      - name: nk_customer_id
+        description: "Natural Key for customer_id"
+        tests:
+          - not_null
+        data_type: integer
+
+
+  - name: dim_hotel
+    description: "Dimension table from hotel table staging"
+    columns:
+      - name: sk_hotel_id
+        description: "Surrogate Key for hotel_id"
+        tests:
+          - not_null
+          - dbt_constraints.primary_key
+
+      - name: nk_hotel_id
+        description: "Natural Key for hotel_id"
+        tests:
+          - not_null
+        data_type: integer
+
+  - name: fct_booking_flights
+    description: "Fact table for booking_flights contains from flight_bookings, dim_aircrafts, dim_airports, dim_airlines,
+                  and dim_customers"
+    columns:
+      - name: sk_trip_id
+        description: "Surrogate Key for trip_id"
+        tests:
+          - not_null
+          - dbt_constraints.primary_key
+
+      - name: nk_trip_id
+        description: "Degenerate Dimension from flight_bookings table for trip_id"
+        tests:
+          - not_null
+        data_type: integer
+      
+      - name: aircraft_code
+        description: "Foreign Key for aircraft_codefrom dim_aircrafts"
+        tests:
+          - not_null
+          - dbt_constraints.foreign_key:
+              pk_table_name: ref('dim_aircrafts')
+              pk_column_name: sk_aircraft_id
+
+      - name: airline_code
+        description: "Foreign Key for airline_code from dim_airlines"
+        tests:
+          - not_null
+          - dbt_constraints.foreign_key:
+              pk_table_name: ref('dim_airlines')
+              pk_column_name: sk_airline_id
+
+      - name: airport_code
+        description: "Foreign Key for airport_code from dim_airports"
+        tests:
+          - not_null
+          - dbt_constraints.foreign_key:
+              pk_table_name: ref('dim_airports')
+              pk_column_name: sk_airport_id
+
+      - name: customer_code
+        description: "Foreign Key for customer_code from dim_customers"
+        tests:
+          - not_null
+          - dbt_constraints.foreign_key:
+              pk_table_name: ref('dim_customers')
+              pk_column_name: sk_customer_id
+
+      - name: travel_class
+        description: "Class preferences of the customer"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['economy', 'business']
+
+      - name: price
+        description: "Price of the booking flights"
+        tests:
+          - not_null
+
+
+  - name: fct_hotel_bookings
+    description: "Fact table for booking_flights contains from hotel_bookings, dim_customers and dim_hotel"
+                  
+    columns:
+      - name: sk_trip_id
+        description: "Surrogate Key for trip_id"
+        tests:
+          - not_null
+          - dbt_constraints.primary_key
+
+      - name: nk_trip_id
+        description: "Degenerate Dimension from hotel_bookings table for trip_id"
+        tests:
+          - not_null
+        data_type: integer
+      
+      - name: hotel_code
+        description: "Foreign Key for hotel_code from dim_hotel"
+        tests:
+          - not_null
+          - dbt_constraints.foreign_key:
+              pk_table_name: ref('dim_hotel')
+              pk_column_name: sk_hotel_id
+
+      - name: customer_code
+        description: "Foreign Key for customer_code from dim_customers"
+        tests:
+          - not_null
+          - dbt_constraints.foreign_key:
+              pk_table_name: ref('dim_customers')
+              pk_column_name: sk_customer_id
+
+
+      - name: price
+        description: "Price of the booking hotel"
+        tests:
+          - not_null
+

@@ -1,0 +1,25 @@
+name: 'dbt_transform'
+version: '1.0.0'
+profile: 'dbt_transform'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  dbt_transform:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+
+vars:
+  dbt_date:time_zone: "America/Los_Angeles"
